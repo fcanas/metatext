@@ -943,12 +943,12 @@ private extension StatusView {
 
         if !UIAccessibility.isReduceMotionEnabled {
             UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: .defaultAnimationDuration,
+				withDuration: .shortAnimationDuration,
                 delay: 0,
-                options: .curveLinear) {
+				options: [.curveEaseOut]) {
                 self.setFavoriteButtonColor(favorited: !self.statusConfiguration.viewModel.favorited)
                 self.favoriteButton.imageView?.transform =
-                    self.favoriteButton.imageView?.transform.rotated(by: .pi) ?? .identity
+					self.favoriteButton.imageView?.transform.scaledBy(x: 1.4, y: 1.4) ?? .identity
             } completion: { _ in
                 self.favoriteButton.imageView?.transform = .identity
             }
