@@ -107,38 +107,43 @@ private extension MainNavigationViewController {
     static let secondaryNavigationViewTag = UUID().hashValue
     static let newStatusViewTag = UUID().hashValue
 
-    func setupViewControllers(pending: Bool) {
-        var controllers: [UIViewController] = [
-            TimelinesViewController(
-                viewModel: viewModel,
-                rootViewModel: rootViewModel)
-        ]
+	func setupViewControllers(pending: Bool) {
+		var controllers: [UIViewController] = [
+			TimelinesViewController(
+				viewModel: viewModel,
+				rootViewModel: rootViewModel)
+		]
 
-        if viewModel.identityContext.identity.authenticated && !pending {
-            tabBar.isHidden = false
-            controllers.append(ExploreViewController(viewModel: viewModel.exploreViewModel(),
-                                                     rootViewModel: rootViewModel))
-            controllers.append(NotificationsViewController(viewModel: viewModel, rootViewModel: rootViewModel))
+		if viewModel.identityContext.identity.authenticated && !pending {
+			tabBar.isHidden = false
+			controllers.append(ExploreViewController(viewModel: viewModel.exploreViewModel(),
+													 rootViewModel: rootViewModel))
+			controllers.append(NotificationsViewController(viewModel: viewModel, rootViewModel: rootViewModel))
 
-            let conversationsViewController = TableViewController(
-                viewModel: viewModel.conversationsViewModel(),
-                rootViewModel: rootViewModel)
+			let conversationsViewController = TableViewController(
+				viewModel: viewModel.conversationsViewModel(),
+				rootViewModel: rootViewModel)
 
-            conversationsViewController.tabBarItem = NavigationViewModel.Tab.messages.tabBarItem
-            conversationsViewController.navigationItem.title = NavigationViewModel.Tab.messages.title
+			conversationsViewController.tabBarItem = NavigationViewModel.Tab.messages.tabBarItem
+			conversationsViewController.navigationItem.title = NavigationViewModel.Tab.messages.title
 
-            controllers.append(conversationsViewController)
+			controllers.append(conversationsViewController)
 
-            setupNewStatusButton()
-        } else {
-            tabBar.isHidden = true
-        }
+			setupNewStatusButton()
+		} else {
+			tabBar.isHidden = true
+		}
 
-        let secondaryNavigationButton = SecondaryNavigationButton(viewModel: viewModel, rootViewModel: rootViewModel)
+		let secondaryNavigationButton = SecondaryNavigationButton(viewModel: viewModel, rootViewModel: rootViewModel)
+		let trailingGroup = UIBarButtonItemGroup(barButtonItems: [secondaryNavigationButton], representativeItem: nil)
 
-        for controller in controllers {
-            controller.navigationItem.leftBarButtonItem = secondaryNavigationButton
-        }
+		for controller in controllers {
+#if targetEnvironment(macCatalyst)
+			controller.navigationItem.trailingItemGroups = [trailingGroup]
+#else
+			controller.navigationItem.leadingItemGroups = [trailingGroup]
+#endif
+		}
 
         viewControllers = controllers.map(SwipeableNavigationController.init(rootViewController:))
     }

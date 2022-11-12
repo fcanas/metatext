@@ -58,6 +58,7 @@ class TableViewController: UITableViewController {
         tableView.isAccessibilityElement = false
         tableView.shouldGroupAccessibilityChildren = true
 
+#if !targetEnvironment(macCatalyst)
         if viewModel.canRefresh {
             refreshControl = UIRefreshControl()
             refreshControl?.addAction(
@@ -65,6 +66,7 @@ class TableViewController: UITableViewController {
                     self?.refreshIfAble() },
                 for: .valueChanged)
         }
+#endif
 
         view.addSubview(webfingerIndicatorView)
         webfingerIndicatorView.translatesAutoresizingMaskIntoConstraints = false

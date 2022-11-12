@@ -42,11 +42,13 @@ final class ExploreViewController: UICollectionViewController {
         collectionView.shouldGroupAccessibilityChildren = true
         clearsSelectionOnViewWillAppear = true
 
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.addAction(
-            UIAction { [weak self] _ in
-                self?.viewModel.refresh() },
-            for: .valueChanged)
+#if !targetEnvironment(macCatalyst)
+		collectionView.refreshControl = UIRefreshControl()
+		collectionView.refreshControl?.addAction(
+			UIAction { [weak self] _ in
+				self?.viewModel.refresh() },
+			for: .valueChanged)
+#endif
 
         navigationItem.title = NSLocalizedString("main-navigation.explore", comment: "")
 

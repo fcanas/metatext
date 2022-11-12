@@ -40,15 +40,30 @@ struct MetatextApp: App {
                     object: nil)
             }
             .store(in: &cancellables)
+
+		self.rootViewModel = try! RootViewModel(
+			environment: Self.environment,
+			registerForRemoteNotifications: appDelegate.registerForRemoteNotifications)
     }
+
+	@Environment(\.openWindow) private var openWindow
+
+	var rootViewModel: RootViewModel!
 
     var body: some Scene {
         WindowGroup {
-            // swiftlint:disable:next force_try
-            RootView(viewModel: try! RootViewModel(
-                        environment: Self.environment,
-                        registerForRemoteNotifications: appDelegate.registerForRemoteNotifications))
-        }
+			RootView(viewModel: rootViewModel)
+		}
+		.commands {
+			CommandGroup(after: .appInfo) {
+				Button("Settings…") {
+					openWindow(id: "settings")
+				}.keyboardShortcut(KeyboardShortcut(",", modifiers: .command))
+			}
+		}
+		WindowGroup("Settings", id: "settings") {
+			PreferencesView(viewModel: PreferencesViewModel(identityContext: rootViewModel.navigationViewModel!.identityContext))
+		}
     }
 }
 
