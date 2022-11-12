@@ -297,6 +297,7 @@ extension TableViewController: NavigationHandling {
 
             webfingerIndicatorView.stopAnimating()
         case let .notification(notificationService):
+			guard let notificationService else { return }
             navigate(toNotification: notificationService.notification)
         case let .url(url):
             open(url: url, identityContext: viewModel.identityContext)
@@ -307,6 +308,8 @@ extension TableViewController: NavigationHandling {
             webfingerIndicatorView.startAnimating()
         case .webfingerEnd:
             webfingerIndicatorView.stopAnimating()
+		case .top(_):
+			fatalError()
         }
     }
 }

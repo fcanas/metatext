@@ -83,7 +83,7 @@ extension MainNavigationViewController: NavigationHandling {
     func handle(navigation: Navigation) {
         switch navigation {
         case .notification:
-            let index = NavigationViewModel.Tab.notifications.rawValue
+            let index = Navigation.Tab.notifications.rawValue
 
             guard let viewControllers = viewControllers,
                   viewControllers.count > index,
@@ -95,6 +95,8 @@ extension MainNavigationViewController: NavigationHandling {
             selectedIndex = index
             notificationsNavigationController.popToRootViewController(animated: false)
             notificationsViewController.handle(navigation: navigation)
+		case .top(let top):
+			selectedIndex = top.rawValue
         default:
             ((selectedViewController as? UINavigationController)?
                 .topViewController as? NavigationHandling)?
@@ -124,8 +126,8 @@ private extension MainNavigationViewController {
 				viewModel: viewModel.conversationsViewModel(),
 				rootViewModel: rootViewModel)
 
-			conversationsViewController.tabBarItem = NavigationViewModel.Tab.messages.tabBarItem
-			conversationsViewController.navigationItem.title = NavigationViewModel.Tab.messages.title
+			conversationsViewController.tabBarItem = Navigation.Tab.messages.tabBarItem
+			conversationsViewController.navigationItem.title = Navigation.Tab.messages.title
 
 			controllers.append(conversationsViewController)
 

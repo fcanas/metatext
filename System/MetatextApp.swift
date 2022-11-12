@@ -60,11 +60,24 @@ struct MetatextApp: App {
 					openWindow(id: "settings")
 				}.keyboardShortcut(KeyboardShortcut(",", modifiers: .command))
 			}
+			CommandGroup(after: .toolbar) {
+				ForEach(Navigation.Tab.allCases) { tab in
+					Button(tab.title) {
+						rootViewModel.navigationViewModel?.navigate(tab: tab)
+					}.keyboardShortcut(KeyboardShortcut(KeyEquivalent("\(tab.rawValue + 1)".first!), modifiers: .command))
+				}
+			}
 		}
 		WindowGroup("Settings", id: "settings") {
 			PreferencesView(viewModel: PreferencesViewModel(identityContext: rootViewModel.navigationViewModel!.identityContext))
 		}
     }
+}
+
+extension Navigation.Tab: Identifiable {
+	public var id: Int {
+		rawValue
+	}
 }
 
 private extension MetatextApp {

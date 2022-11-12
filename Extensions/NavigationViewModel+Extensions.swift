@@ -4,7 +4,7 @@ import Foundation
 import UIKit
 import ViewModels
 
-extension NavigationViewModel.Tab {
+extension Navigation.Tab {
     var title: String {
         switch self {
         case .timelines:

@@ -10,10 +10,18 @@ public enum Navigation {
     case url(URL)
     case collection(CollectionService)
     case profile(ProfileService)
-    case notification(NotificationService)
+    case notification(NotificationService?)
     case searchScope(SearchScope)
     case webfingerStart
     case webfingerEnd
+	case top(Navigation.Tab)
+
+	public enum Tab: Int, CaseIterable {
+		case timelines
+		case explore
+		case notifications
+		case messages
+	}
 }
 
 public struct NavigationService {

@@ -39,16 +39,10 @@ public final class NavigationViewModel: ObservableObject {
 }
 
 public extension NavigationViewModel {
-    enum Tab: Int, CaseIterable {
-        case timelines
-        case explore
-        case notifications
-        case messages
-    }
 
-    var tabs: [Tab] {
+	var tabs: [Navigation.Tab] {
         if identityContext.identity.authenticated {
-            return Tab.allCases
+			return Navigation.Tab.allCases
         } else {
             return [.timelines, .explore]
         }
@@ -128,6 +122,13 @@ public extension NavigationViewModel {
         navigationsSubject.send(
             .collection(identityContext.service.navigationService.timelineService(timeline: timeline)))
     }
+
+	func navigate(tab: Navigation.Tab) {
+		presentingSecondaryNavigation = false
+		presentedNewStatusViewModel = nil
+
+		navigationsSubject.send(.top(tab))
+	}
 
     func navigateToFollowerRequests() {
         presentingSecondaryNavigation = false

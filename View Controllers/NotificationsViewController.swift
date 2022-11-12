@@ -38,7 +38,7 @@ final class NotificationsViewController: UIPageViewController {
             setViewControllers([firstViewController], direction: .forward, animated: false)
         }
 
-        tabBarItem = NavigationViewModel.Tab.notifications.tabBarItem
+        tabBarItem = Navigation.Tab.notifications.tabBarItem
     }
 
     @available(*, unavailable)
