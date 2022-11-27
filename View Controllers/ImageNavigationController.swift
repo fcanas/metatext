@@ -43,6 +43,24 @@ final class ImageNavigationController: UINavigationController {
         transitioningDelegate = transitionController
         transitionController.toDelegate = self
     }
+
+	override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+
+		var handledPresses: Set<UIPress> = []
+
+		for press in presses {
+			switch (press.key?.keyCode) {
+			case .keyboardEscape:
+				presentingViewController?.dismiss(animated: true)
+				handledPresses.insert(press)
+				continue
+			default:
+				break
+			}
+		}
+
+		super.pressesBegan(presses.subtracting(handledPresses), with: event)
+	}
 }
 
 extension ImageNavigationController {
