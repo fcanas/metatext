@@ -19,6 +19,14 @@ final class ImageNavigationController: UINavigationController {
         fatalError("init(coder:) has not been implemented")
     }
 
+	override func accessibilityPerformEscape() -> Bool {
+		if let presentingViewController {
+			presentingViewController.dismiss(animated: true)
+			return true
+		}
+		return false
+	}
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
