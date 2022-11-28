@@ -141,7 +141,7 @@ private extension MainNavigationViewController {
 
 		for controller in controllers {
 #if targetEnvironment(macCatalyst)
-			controller.navigationItem.trailingItemGroups = [trailingGroup]
+			controller.navigationItem.pinnedTrailingGroup = trailingGroup
 #else
 			controller.navigationItem.leadingItemGroups = [trailingGroup]
 #endif
